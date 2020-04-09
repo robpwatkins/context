@@ -3,7 +3,7 @@ import './App.css';
 
 const MyContext = React.createContext();
 
-class App extends Component {
+class MyProvider extends Component {
   state = {
     name: "Rob",
     age: 35
@@ -11,16 +11,28 @@ class App extends Component {
   
   render() {
     return (
-      <MyContext.Provider value={{
+      <MyContext.Provider value={{ 
         state: this.state,
-        benjaminButton: () => this.setState({ age: this.state.age - 1})
-      }}>
+        benjaminButton: () => this.setState({
+          age: this.state.age - 1
+        })
+         }}>
+        {this.props.children}
+      </MyContext.Provider>
+    )
+  }
+}
+
+class App extends Component {
+  
+  render() {
+    return (
+      <MyProvider>
         <div className="App">
           <h1>I'm the app</h1>
           <Family />
         </div>
-      </MyContext.Provider>
-
+      </MyProvider>
     );
   }
 }
@@ -39,14 +51,14 @@ class Person extends Component {
         <MyContext.Consumer>
           {(context) => (
             <div>
-              <p>Name: {context.state.name}</p>
-              <p>Age: {context.state.age}</p>
-              <button onClick={context.benjaminButton}>Try me!</button>
+              <p> Name: {context.state.name}</p>
+              <p> Age: {context.state.age}</p>
+              <button onClick={context.benjaminButton}>Try Me!</button>
             </div>
           )}
         </MyContext.Consumer>
       </div>
-    )
+    )  
   }
 }
 export default App;
